@@ -32,6 +32,15 @@ param keyVaultName string = 'kv-${appSuffix}'
 @description('The name given to the Azure Load Testing Service')
 param azureLoadTestName string = 'alt-${appSuffix}'
 
+@description('The name given to the Event Grid System Topic')
+param eventGridSystemTopicName string = 'evgt-audio-${appSuffix}'
+
+@description('The name of the Storage Account that files will be uploaded to')
+param audioStorageAccount string = 'stor${replace(appSuffix, '-', '')}'
+
+@description('The name of the container inside the audio files storage account')
+param audioStorageContainer string = 'audios'
+
 @description('The name of the Publisher')
 param publisherName string
 
@@ -101,5 +110,24 @@ module loadTest 'integration/azure-load-testing.bicep' = {
     location: location
     tags: tags
     loadTestName: azureLoadTestName
+  }
+}
+
+module systemTopic 'integration/event-grid-system-topic.bicep' = {
+  name: 'system-topic'
+  params: {
+    location: location
+    tags: tags
+    systemTopicName: eventGridSystemTopicName
+  }
+}
+
+module audioStorage 'data/storage-account.bicep' = {
+  name: 'audio-storage'
+  params: {
+    location: location
+    tags: tags
+    containerName: audioStorageContainer
+    storageAccountName: audioStorageAccount
   }
 }
