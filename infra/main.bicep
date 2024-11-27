@@ -29,6 +29,9 @@ param azureOpenAIName string = 'oai-${appSuffix}'
 @description('The name given to the Key Vault')
 param keyVaultName string = 'kv-${appSuffix}'
 
+@description('The name given to the Azure Load Testing Service')
+param azureLoadTestName string = 'alt-${appSuffix}'
+
 @description('The name of the Publisher')
 param publisherName string
 
@@ -89,5 +92,14 @@ module keyVault 'security/key-vault.bicep' = {
     location: location
     tags: tags
     keyVaultName: keyVaultName
+  }
+}
+
+module loadTest 'integration/azure-load-testing.bicep' = {
+  name: 'load-test'
+  params: {
+    location: location
+    tags: tags
+    loadTestName: azureLoadTestName
   }
 }
