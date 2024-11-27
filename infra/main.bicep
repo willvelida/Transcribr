@@ -173,3 +173,11 @@ module audioUploaderFunc 'apps/transcribr-fileuploader.bicep' = {
     funcAppName: audioUploadFuncAppName
   }
 }
+
+module audioUploaderCosmosRole 'security/cosmos-role-assignment.bicep' = {
+  name: 'audio-uploader-cosmos-role'
+  params: {
+    cosmosDbAccountName: cosmos.outputs.accountName
+    principalId: audioUploaderFunc.outputs.principalId
+  }
+}

@@ -38,7 +38,6 @@ param containerName string
 
 var blobDataOwnerRoleId = 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
 var monitoringMetricsPublisherRoleId = '3913510d-42f4-4e42-8a64-420c390055eb'
-var cosmosDataContributorRoleId = '00000000-0000-0000-0000-000000000002'
 
 resource audioStorage 'Microsoft.Storage/storageAccounts@2023-05-01' existing = {
   name: audioStorageAccountName
@@ -68,7 +67,7 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2023-05-01
 }
 
 resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-05-01' = {
-  name: containerName
+  name: storageContainerName
   parent: blobServices
   properties: {
     publicAccess: 'None'
@@ -182,12 +181,5 @@ resource metricsPublisherRole 'Microsoft.Authorization/roleAssignments@2022-04-0
   }
 }
 
-resource cosmosDataContributorRole 'Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments@2024-09-01-preview' = {
-  name: cosmosDataContributorRoleId
-  parent: cosmosDb
-  properties: {
-    scope: cosmosDb.id
-    principalId: flexFunctionApp.identity.principalId
-    roleDefinitionId: cosmosDataContributorRoleId
-  }
-}
+@description('The Principal Id of the deployed Function App')
+output principalId string = flexFunctionApp.identity.principalId

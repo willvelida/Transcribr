@@ -20,7 +20,7 @@ resource speechServices 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
   sku: {
     name: 'S0'
   }
-  
+  properties: {}
   identity: {
     type: 'SystemAssigned'
   }
