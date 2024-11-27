@@ -23,6 +23,9 @@ param apimName string = 'api-${appSuffix}'
 @description('The name given to the Cosmos DB account')
 param cosmosDbName string = 'cosmos-${appSuffix}'
 
+@description('The name given to the Azure Open AI account')
+param azureOpenAIName string = 'oai-${appSuffix}'
+
 @description('The name of the Publisher')
 param publisherName string
 
@@ -65,5 +68,14 @@ module cosmos 'data/cosmos-db.bicep' = {
     location: location
     tags: tags
     accountName: cosmosDbName 
+  }
+}
+
+module openAI 'ai/azure-open-ai.bicep' = {
+  name: 'open-ai'
+  params: {
+    location: location
+    tags: tags
+    openAIName: azureOpenAIName 
   }
 }
