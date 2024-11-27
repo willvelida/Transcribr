@@ -40,7 +40,7 @@ resource gpt4oMiniDeploy 'Microsoft.CognitiveServices/accounts/deployments@2023-
     }
   }
   sku: {
-    name: 'global-standard'
+    name: 'GlobalStandard'
     capacity: 10
   }
 }
