@@ -26,6 +26,9 @@ param cosmosDbName string = 'cosmos-${appSuffix}'
 @description('The name given to the Azure Open AI account')
 param azureOpenAIName string = 'oai-${appSuffix}'
 
+@description('The name given to the Speech Services account')
+param speechServicesName string = 'speech-${appSuffix}'
+
 @description('The name given to the Key Vault')
 param keyVaultName string = 'kv-${appSuffix}'
 
@@ -92,6 +95,15 @@ module openAI 'ai/azure-open-ai.bicep' = {
     location: location
     tags: tags
     openAIName: azureOpenAIName 
+  }
+}
+
+module speech 'ai/speech-service.bicep' = {
+  name: 'speech'
+  params: {
+    location: location
+    tags: tags
+    speechServicesName: speechServicesName
   }
 }
 
