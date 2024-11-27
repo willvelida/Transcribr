@@ -26,6 +26,9 @@ param cosmosDbName string = 'cosmos-${appSuffix}'
 @description('The name given to the Azure Open AI account')
 param azureOpenAIName string = 'oai-${appSuffix}'
 
+@description('The name given to the Key Vault')
+param keyVaultName string = 'kv-${appSuffix}'
+
 @description('The name of the Publisher')
 param publisherName string
 
@@ -77,5 +80,14 @@ module openAI 'ai/azure-open-ai.bicep' = {
     location: location
     tags: tags
     openAIName: azureOpenAIName 
+  }
+}
+
+module keyVault 'security/key-vault.bicep' = {
+  name: 'key-vault'
+  params: {
+    location: location
+    tags: tags
+    keyVaultName: keyVaultName
   }
 }
