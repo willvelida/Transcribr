@@ -12,7 +12,7 @@ param aiTags object = {
   ResourceType: 'AI'
 }
 
-resource azureOpenAI 'Microsoft.CognitiveServices/accounts@2024-10-01' = {
+resource azureOpenAI 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
   name: openAIName
   location: location
   tags: union(aiTags, tags)
@@ -30,7 +30,7 @@ resource azureOpenAI 'Microsoft.CognitiveServices/accounts@2024-10-01' = {
   }
 }
 
-resource gpt4oMiniDeploy 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01' = {
+resource gpt4oMiniDeploy 'Microsoft.CognitiveServices/accounts/deployments@2023-05-01' = {
   name: 'gpt-4o-mini'
   parent: azureOpenAI
   properties: {
