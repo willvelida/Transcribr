@@ -20,7 +20,7 @@ resource systemTopic 'Microsoft.EventGrid/systemTopics@2024-06-01-preview' = {
   location: location
   tags: union(tags, integrationTags)
   properties: {
-    source: 
+    source: storageAccountId
     topicType: 'Microsoft.Storage.StorageAccounts'
   }
 }
