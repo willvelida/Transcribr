@@ -119,6 +119,7 @@ module systemTopic 'integration/event-grid-system-topic.bicep' = {
     location: location
     tags: tags
     systemTopicName: eventGridSystemTopicName
+    storageAccountId: audioStorage.outputs.storageAccountId
   }
 }
 

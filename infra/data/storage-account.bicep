@@ -37,3 +37,6 @@ resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@20
     publicAccess: 'None'
   }
 }
+
+@description('The Id of the deployed Storage Account')
+output storageAccountId string = storageAccount.id
