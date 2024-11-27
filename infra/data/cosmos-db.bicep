@@ -18,7 +18,7 @@ param databaseName string = 'TranscribrDB'
 @description('The name of the container that is deployed inside the Database')
 param containerName string = 'audio-transcripts'
 
-resource account 'Microsoft.DocumentDB/databaseAccounts@2024-09-01-preview' = {
+resource account 'Microsoft.DocumentDB/databaseAccounts@2024-05-15' = {
   name: accountName
   location: location
   tags: union(tags, dataTags)
