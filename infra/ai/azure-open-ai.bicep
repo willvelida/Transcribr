@@ -37,7 +37,7 @@ resource gpt4oMiniDeploy 'Microsoft.CognitiveServices/accounts/deployments@2024-
     model: {
       format: 'OpenAI'
       name: 'gpt-4o-mini'
-      version: '2024-07-18'
+      version: '2024-08-06'
     }
   }
   sku: {
