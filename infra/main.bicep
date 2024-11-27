@@ -54,6 +54,7 @@ param publisherName string
 param publisherEmail string
 
 var audioUploadFuncAppName = 'transcribr-upload'
+var audioProcessorFuncAppName = 'transcribr-processor'
 
 module logAnalytics 'monitoring/log-analytics.bicep' = {
   name: 'log-analytics'
@@ -109,6 +110,7 @@ module speech 'ai/speech-service.bicep' = {
     location: location
     tags: tags
     speechServicesName: speechServicesName
+    keyVaultName: keyVault.outputs.name
   }
 }
 
@@ -174,10 +176,36 @@ module audioUploaderFunc 'apps/transcribr-fileuploader.bicep' = {
   }
 }
 
+module audioFileProcessorFunc 'apps/transcribr-fileprocessor.bicep' = {
+  name: 'audio-file-processor-func'
+  params: {
+    location: location
+    tags: tags
+    appInsightsName: appInsights.outputs.appInsightsName
+    appServicePlanId: appServicePlan.outputs.appServicePlanId
+    audioStorageAccountName: audioStorage.outputs.storageAccountName
+    azureOpenAIName: openAI.outputs.name
+    chatModelName: openAI.outputs.chatModelDeploymentName
+    containerName: cosmos.outputs.containerName
+    cosmosDbAccountName: cosmos.outputs.accountName
+    databaseName: cosmos.outputs.databaseName
+    funcAppName: audioProcessorFuncAppName
+    speechServiceName: speech.outputs.name
+  }
+}
+
 module audioUploaderCosmosRole 'security/cosmos-role-assignment.bicep' = {
   name: 'audio-uploader-cosmos-role'
   params: {
     cosmosDbAccountName: cosmos.outputs.accountName
     principalId: audioUploaderFunc.outputs.principalId
+  }
+}
+
+module audioProcessorCosmosRole 'security/cosmos-role-assignment.bicep' = {
+  name: 'audio-processor-cosmos-role'
+  params: {
+    cosmosDbAccountName: cosmos.outputs.accountName
+    principalId: audioFileProcessorFunc.outputs.principalId
   }
 }

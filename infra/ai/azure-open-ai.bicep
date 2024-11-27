@@ -44,3 +44,9 @@ resource gpt4oMiniDeploy 'Microsoft.CognitiveServices/accounts/deployments@2023-
     capacity: 10
   }
 }
+
+@description('The name of the Chat Model Deployment')
+output chatModelDeploymentName string = gpt4oMiniDeploy.name
+
+@description('The Azure Open AI name')
+output name string = azureOpenAI.name

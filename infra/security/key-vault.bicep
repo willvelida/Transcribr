@@ -28,3 +28,6 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
     enableRbacAuthorization: true
   }
 }
+
+@description('The name of the deployed Key Vault')
+output name string = keyVault.name
