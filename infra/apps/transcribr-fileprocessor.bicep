@@ -45,9 +45,7 @@ param chatModelName string
 @description('The Speech Service that this Function App will use')
 param speechServiceName string
 
-var blobDataOwnerRoleId = 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
-var monitoringMetricsPublisherRoleId = '3913510d-42f4-4e42-8a64-420c390055eb'
-var openAIUserRoleId = '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
+
 
 resource audioStorage 'Microsoft.Storage/storageAccounts@2023-05-01' existing = {
   name: audioStorageAccountName
@@ -193,45 +191,8 @@ resource flexFunctionApp 'Microsoft.Web/sites@2024-04-01' = {
   }
 }
 
-resource audioBlobDataOwnerRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(audioStorage.id, flexFunctionApp.id, blobDataOwnerRoleId)
-  scope: audioStorage
-  properties: {
-    principalId: flexFunctionApp.identity.principalId
-    roleDefinitionId: blobDataOwnerRoleId
-    principalType: 'ServicePrincipal'
-  }
-}
-
-resource funcBlobDataOwnerRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(storageAccount.id, flexFunctionApp.id, blobDataOwnerRoleId)
-  scope: storageAccount
-  properties: {
-    principalId: flexFunctionApp.identity.principalId
-    roleDefinitionId: blobDataOwnerRoleId
-    principalType: 'ServicePrincipal'
-  }
-}
-
-resource metricsPublisherRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(appInsights.id, flexFunctionApp.id, monitoringMetricsPublisherRoleId)
-  scope: appInsights
-  properties: {
-    principalId: flexFunctionApp.identity.principalId
-    roleDefinitionId: monitoringMetricsPublisherRoleId
-    principalType: 'ServicePrincipal'
-  }
-}
-
-resource openAIUserRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(azureOpenAI.id, flexFunctionApp.id, openAIUserRoleId)
-  scope: azureOpenAI
-  properties: {
-    principalId: flexFunctionApp.identity.principalId
-    roleDefinitionId: openAIUserRoleId
-    principalType: 'ServicePrincipal'
-  }
-}
-
 @description('The Principal Id of the deployed Function App')
 output principalId string = flexFunctionApp.identity.principalId
+
+@description('The name of the Storage account that belongs to this Function')
+output storageAccountName string = storageAccount.name

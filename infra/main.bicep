@@ -203,3 +203,16 @@ module audioProcessorCosmosRole 'security/cosmos-role-assignment.bicep' = {
     principalId: audioFileProcessorFunc.outputs.principalId
   }
 }
+
+module roleAssignments 'security/role-assignments.bicep' = {
+  name: 'role-assignments'
+  params: {
+    appInsightsName: appInsights.outputs.appInsightsName
+    audioStorageAccountName: audioStorage.outputs.storageAccountName
+    azureOpenAIAccountName: openAI.outputs.name
+    processorFuncPrincipalId: audioFileProcessorFunc.outputs.principalId
+    processorFuncStorageAccountName: audioFileProcessorFunc.outputs.storageAccountName
+    uploaderFuncPrincipalId: audioUploaderFunc.outputs.principalId
+    uploaderFuncStorageAccountName: audioUploaderFunc.outputs.storageAccountName
+  }
+}
