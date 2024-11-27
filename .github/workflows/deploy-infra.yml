@@ -59,7 +59,7 @@ jobs:
               name: Run what-if
               with:
                 inlineScript: |
-                    az deployment group what-if --resource-group ${{ secrets.AZURE_RG_NAME }} --template-file ./infra/main.bicep --parameters parameters: publisherName=${{ secrets.PUBLISHER_NAME }} publisherEmail=${{ secrets.PUBLISHER_EMAIL }}
+                    az deployment group what-if --resource-group ${{ secrets.AZURE_RG_NAME }} --template-file ./infra/main.bicep --parameters publisherName=${{ secrets.PUBLISHER_NAME }} publisherEmail=${{ secrets.PUBLISHER_EMAIL }}
 
     deploy:
         needs: preview
