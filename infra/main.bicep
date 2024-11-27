@@ -35,6 +35,9 @@ param keyVaultName string = 'kv-${appSuffix}'
 @description('The name given to the Azure Load Testing Service')
 param azureLoadTestName string = 'alt-${appSuffix}'
 
+@description('The name given to the App Service Plan')
+param appServicePlanName string = 'asp-${appSuffix}'
+
 @description('The name given to the Event Grid System Topic')
 param eventGridSystemTopicName string = 'evgt-audio-${appSuffix}'
 
@@ -49,6 +52,8 @@ param publisherName string
 
 @description('The email of the Publisher')
 param publisherEmail string
+
+var audioUploadFuncAppName = 'transcribr-upload'
 
 module logAnalytics 'monitoring/log-analytics.bicep' = {
   name: 'log-analytics'
@@ -142,5 +147,29 @@ module audioStorage 'data/storage-account.bicep' = {
     tags: tags
     containerName: audioStorageContainer
     storageAccountName: audioStorageAccount
+  }
+}
+
+module appServicePlan 'compute/app-service-plan.bicep' = {
+  name: 'asp'
+  params: {
+    location: location 
+    tags: tags
+    aspName: appServicePlanName
+  }
+}
+
+module audioUploaderFunc 'apps/transcribr-fileuploader.bicep' = {
+  name: 'audio-uploader-func'
+  params: {
+    location: location
+    tags: tags
+    appInsightsName: appInsights.outputs.appInsightsName
+    appServicePlanId: appServicePlan.outputs.appServicePlanId
+    audioStorageAccountName: audioStorage.outputs.storageAccountName
+    containerName: cosmos.outputs.containerName
+    cosmosDbAccountName: cosmos.outputs.accountName
+    databaseName: cosmos.outputs.databaseName
+    funcAppName: audioUploadFuncAppName
   }
 }

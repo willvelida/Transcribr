@@ -27,5 +27,5 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   }
 }
 
-@description('The connection string of the deployed Application Insights workspace')
-output connectionString string = appInsights.properties.ConnectionString
+@description('The name of the deployed Application Insights workspace')
+output appInsightsName string = appInsights.name

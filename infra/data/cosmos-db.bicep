@@ -97,3 +97,12 @@ resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/container
     }
   }
 }
+
+@description('The name of the deployed Cosmos DB database')
+output databaseName string = database.name
+
+@description('The name of the deployed Cosmos DB container')
+output containerName string = container.name
+
+@description('The name of the deployed Cosmos DB account')
+output accountName string = account.name

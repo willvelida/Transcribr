@@ -40,3 +40,9 @@ resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@20
 
 @description('The Id of the deployed Storage Account')
 output storageAccountId string = storageAccount.id
+
+@description('The name of the deployed Storage Account')
+output storageAccountName string = storageAccount.name
+
+@description('The name of the deployed blob container')
+output blobContainerName string = container.name
