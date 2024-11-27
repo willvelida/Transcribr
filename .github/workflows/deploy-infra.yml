@@ -15,6 +15,7 @@ permissions:
 
 jobs:
     lint:
+        name: Run Linter
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -23,6 +24,7 @@ jobs:
 
     validate:
         needs: lint
+        name: Validate Template
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -45,6 +47,7 @@ jobs:
 
     preview:
         needs: validate
+        name: Preview Changes
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -63,6 +66,7 @@ jobs:
 
     deploy:
         needs: preview
+        name: Deploy Template
         runs-on: ubuntu-latest
         environment: Production
         steps:
@@ -74,7 +78,7 @@ jobs:
                 subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
             - uses: azure/arm-deploy@v2
-              name: Run preflight validation
+              name: Deploy Bicep Template
               with:
                   scope: 'resourcegroup'
                   deploymentName: ${{ github.run_number }}

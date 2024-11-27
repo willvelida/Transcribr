@@ -20,6 +20,9 @@ param appInsightsName string = 'appins-${appSuffix}'
 @description('The name given to the API Management Instance')
 param apimName string = 'api-${appSuffix}'
 
+@description('The name given to the Cosmos DB account')
+param cosmosDbName string = 'cosmos-${appSuffix}'
+
 @description('The name of the Publisher')
 param publisherName string
 
@@ -53,5 +56,14 @@ module apim 'integration/apim.bicep' = {
     apimName: apimName
     publisherEmail: publisherEmail
     publisherName: publisherName
+  }
+}
+
+module cosmos 'data/cosmos-db.bicep' = {
+  name: 'cosmos'
+  params: {
+    location: location
+    tags: tags
+    accountName: cosmosDbName 
   }
 }
