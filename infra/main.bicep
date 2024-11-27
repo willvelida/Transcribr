@@ -17,6 +17,15 @@ param lawName string = 'law-${appSuffix}'
 @description('The name given to the Application Insights workspace')
 param appInsightsName string = 'appins-${appSuffix}'
 
+@description('The name given to the API Management Instance')
+param apimName string = 'api-${appSuffix}'
+
+@description('The name of the Publisher')
+param publisherName string
+
+@description('The email of the Publisher')
+param publisherEmail string
+
 module logAnalytics 'monitoring/log-analytics.bicep' = {
   name: 'log-analytics'
   params: {
@@ -33,5 +42,16 @@ module appInsights 'monitoring/app-insights.bicep' = {
     tags: tags
     appInsightsName: appInsightsName
     logAnalyticsWorkspaceId: logAnalytics.outputs.lawId
+  }
+}
+
+module apim 'integration/apim.bicep' = {
+  name: 'apim'
+  params: {
+    location: location 
+    tags: tags
+    apimName: apimName
+    publisherEmail: publisherEmail
+    publisherName: publisherName
   }
 }

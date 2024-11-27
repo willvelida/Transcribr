@@ -7,6 +7,11 @@ param location string
 @description('The tags that will be applied to the APIM resource')
 param tags object
 
+@description('The Integration specific tags that will be applied to Integration specific resources')
+param integrationTags object = {
+  ResourceType: 'Integration'
+}
+
 @description('The name of the Publisher for the APIM instance')
 param publisherName string
 
@@ -16,7 +21,7 @@ param publisherEmail string
 resource apim 'Microsoft.ApiManagement/service@2024-05-01' =   {
   name: apimName
   location: location
-  tags: tags
+  tags: union(tags, integrationTags)
   sku: {
     name: 'Consumption'
     capacity: 0
