@@ -12,8 +12,8 @@ param computeTags object = {
   ResourceType: 'Transcribr.FileProcessor'
 }
 
-@description('The Id of the App Service Plan that this Function will be deployed to')
-param appServicePlanId string
+@description('The Name of the App Service Plan that this Function will be deployed to')
+param appServicePlanName string
 
 @description('The Storage Account that belongs to this Function App')
 param storageAccountName string = 'stor${replace(funcAppName, '-', '')}'
@@ -69,6 +69,15 @@ resource speechService 'Microsoft.CognitiveServices/accounts@2023-05-01' existin
   name: speechServiceName
 }
 
+module appServicePlan '../compute/app-service-plan.bicep' = {
+  name: 'processor-asp'
+  params: {
+    location: location
+    tags: tags
+    aspName: appServicePlanName
+  }
+}
+
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   name: storageAccountName
   location: location
@@ -101,7 +110,7 @@ resource flexFunctionApp 'Microsoft.Web/sites@2024-04-01' = {
     type: 'SystemAssigned'
   }
   properties: {
-    serverFarmId: appServicePlanId
+    serverFarmId: appServicePlan.outputs.appServicePlanId
     siteConfig: {
       appSettings: [
         { 

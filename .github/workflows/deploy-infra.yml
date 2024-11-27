@@ -86,4 +86,3 @@ jobs:
                   template: ./infra/main.bicep
                   parameters: publisherName=${{ secrets.PUBLISHER_NAME }} publisherEmail=${{ secrets.PUBLISHER_EMAIL }}
                   failOnStdErr: false
-                  additionalArguments: --debug 

@@ -35,8 +35,11 @@ param keyVaultName string = 'kv-${appSuffix}'
 @description('The name given to the Azure Load Testing Service')
 param azureLoadTestName string = 'alt-${appSuffix}'
 
-@description('The name given to the App Service Plan')
-param appServicePlanName string = 'asp-${appSuffix}'
+@description('The name given to the App Service Plan for the Upload Function')
+param uploadAppServicePlanName string = 'asp-upload-${appSuffix}'
+
+@description('The name given to the App Service Plan for the Processor Function')
+param processorAppServicePlanName string = 'asp-processor-${appSuffix}'
 
 @description('The name given to the Event Grid System Topic')
 param eventGridSystemTopicName string = 'evgt-audio-${appSuffix}'
@@ -152,22 +155,13 @@ module audioStorage 'data/storage-account.bicep' = {
   }
 }
 
-module appServicePlan 'compute/app-service-plan.bicep' = {
-  name: 'asp'
-  params: {
-    location: location 
-    tags: tags
-    aspName: appServicePlanName
-  }
-}
-
 module audioUploaderFunc 'apps/transcribr-fileuploader.bicep' = {
   name: 'audio-uploader-func'
   params: {
     location: location
     tags: tags
     appInsightsName: appInsights.outputs.appInsightsName
-    appServicePlanId: appServicePlan.outputs.appServicePlanId
+    appServicePlanName: uploadAppServicePlanName
     audioStorageAccountName: audioStorage.outputs.storageAccountName
     containerName: cosmos.outputs.containerName
     cosmosDbAccountName: cosmos.outputs.accountName
@@ -182,7 +176,7 @@ module audioFileProcessorFunc 'apps/transcribr-fileprocessor.bicep' = {
     location: location
     tags: tags
     appInsightsName: appInsights.outputs.appInsightsName
-    appServicePlanId: appServicePlan.outputs.appServicePlanId
+    appServicePlanName: processorAppServicePlanName
     audioStorageAccountName: audioStorage.outputs.storageAccountName
     azureOpenAIName: openAI.outputs.name
     chatModelName: openAI.outputs.chatModelDeploymentName
