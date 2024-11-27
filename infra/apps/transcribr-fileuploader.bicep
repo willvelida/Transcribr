@@ -16,7 +16,7 @@ param computeTags object = {
 param appServicePlanId string
 
 @description('The Storage Account that belongs to this Function App')
-param storageAccountName string = 'stor${funcAppName}'
+param storageAccountName string = 'stor${replace(funcAppName, '-', '')}'
 
 @description('The Storage Configuration that this Function App uses for Deployment')
 param storageContainerName string = 'deploymentpackage'
