@@ -183,7 +183,8 @@ resource metricsPublisherRole 'Microsoft.Authorization/roleAssignments@2022-04-0
 }
 
 resource cosmosDataContributorRole 'Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments@2024-09-01-preview' = {
-  name: guid(cosmosDb.id, flexFunctionApp.id, cosmosDataContributorRoleId)
+  name: cosmosDataContributorRoleId
+  parent: cosmosDb
   properties: {
     scope: cosmosDb.id
     principalId: flexFunctionApp.identity.principalId
