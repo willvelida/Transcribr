@@ -19,9 +19,9 @@ param azureOpenAIAccountName string
 @description('Name of the App Insights workspace')
 param appInsightsName string
 
-var openAIUserRoleId = '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
-var blobDataOwnerRoleId = 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
-var monitoringMetricsPublisherRoleId = '3913510d-42f4-4e42-8a64-420c390055eb'
+var openAIUserRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions','5e0bd9bd-7b93-4f28-af87-19fc36ad61bd')
+var blobDataOwnerRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions','b7e6dc6d-f1e8-4753-8033-0f276bb0955b')
+var monitoringMetricsPublisherRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions','3913510d-42f4-4e42-8a64-420c390055eb')
 
 resource openAI 'Microsoft.CognitiveServices/accounts@2024-10-01' existing = {
   name: azureOpenAIAccountName
