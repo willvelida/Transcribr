@@ -85,4 +85,5 @@ jobs:
                   resourceGroupName: ${{ secrets.AZURE_RG_NAME }}
                   template: ./infra/main.bicep
                   parameters: publisherName=${{ secrets.PUBLISHER_NAME }} publisherEmail=${{ secrets.PUBLISHER_EMAIL }}
-                  failOnStdErr: false 
+                  failOnStdErr: false
+                  additionalArguments: --debug 

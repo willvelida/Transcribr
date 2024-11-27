@@ -74,7 +74,7 @@ resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@20
   }
 }
 
-resource flexFunctionApp 'Microsoft.Web/sites@2024-04-01' = {
+resource flexFunctionApp 'Microsoft.Web/sites@2023-12-01' = {
   name: funcAppName
   location: location
   tags: union(tags, computeTags)
