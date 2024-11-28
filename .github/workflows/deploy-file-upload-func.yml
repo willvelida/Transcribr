@@ -42,7 +42,7 @@ jobs:
               run: dotnet publish ./Transcribr.FileUpload/Transcribr.FileUpload.csproj --configuration Release --output ${{ env.OUTPUT_PATH }}
 
             - name: Package Functions
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
                 name: ${{ env.FUNC_APP_NAME }}
                 path: ${{ env.OUTPUT_PATH }}
@@ -52,7 +52,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Download Artifact
-              uses: actions/download-artifact@v3
+              uses: actions/download-artifact@v4
               with:
                 name: ${{ env.FUNC_APP_NAME }}
                 path: ${{ env.OUTPUT_PATH }}
