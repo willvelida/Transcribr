@@ -173,7 +173,7 @@ resource flexFunctionApp 'Microsoft.Web/sites@2024-04-01' = {
       deployment: {
         storage: {
           type: 'blobContainer'
-          value: storageContainerName
+          value: '${storageAccount.properties.primaryEndpoints.blob}${container.name}'
           authentication: {
             type: 'SystemAssignedIdentity'
           }
