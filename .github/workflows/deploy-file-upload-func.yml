@@ -1,0 +1,71 @@
+name: Deploy Transcribr.FileUpload Function
+
+on:
+    pull_request:
+        branches:
+            - main
+        paths:
+            - 'src/Transcribr.FileUpload/**'
+    workflow_dispatch:
+
+permissions:
+    contents: read
+    id-token: write
+    pull-requests: write
+
+env:
+    AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'
+    DOTNET_VERSION: 8.0.x
+    OUTPUT_PATH: ${{ github.workspace }}/.output
+    FUNC_APP_NAME: transcribr-upload
+
+jobs:
+    build-function-app:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: './src/Transcribr.FileUpload/'
+        steps:
+            - uses: actions/checkout@v4
+            - name: Setup Dotnet
+              uses: actions/setup-dotnet@v3
+              with:
+                dotnet-version: ${{ env.DOTNET_VERSION }}
+
+            - name: 'Install dependencies'
+              run: dotnet restore
+
+            - name: 'Build project'
+              run: dotnet build --no-restore
+
+            - name: 'Publish Functions'
+              run: dotnet publish ./Transcribr.FileUpload/Transcribr.FileUpload.csproj --configuration Release --output ${{ env.OUTPUT_PATH }}
+
+            - name: Package Functions
+              uses: actions/upload-artifact@v3
+              with:
+                name: ${{ env.FUNC_APP_NAME }}
+                path: ${{ env.OUTPUT_PATH }}
+    
+    deploy-function-app:
+        needs: build-function-app
+        runs-on: ubuntu-latest
+        steps:
+            - name: Download Artifact
+              uses: actions/download-artifact@v3
+              with:
+                name: ${{ env.FUNC_APP_NAME }}
+                path: ${{ env.OUTPUT_PATH }}
+
+            - name: Azure Login
+              uses: azure/login@v2
+              with:
+                client-id: ${{ secrets.AZURE_CLIENT_ID }}
+                tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+                subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+            - name: Deploy Function to Azure
+              uses: Azure/functions-action@v1
+              with:
+                app-name: ${{ env.FUNC_APP_NAME }}
+                package: ${{ env.OUTPUT_PATH }}
