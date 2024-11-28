@@ -24,6 +24,9 @@ param storageContainerName string = 'deploymentpackage'
 @description('The name of the Audio Storage Account')
 param audioStorageAccountName string
 
+@description('The name of the container for the Audio files')
+param audioStorageContainerName string
+
 @description('The Application Insights instance that this Function App will send logs to')
 param appInsightsName string
 
@@ -110,7 +113,7 @@ resource flexFunctionApp 'Microsoft.Web/sites@2023-12-01' = {
         }
         { 
           name: 'STORAGE_ACCOUNT_CONTAINER'
-          value: container.name
+          value: audioStorageContainerName
         }
         { 
           name: 'ERROR_RATE'
