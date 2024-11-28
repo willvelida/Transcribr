@@ -167,6 +167,7 @@ module audioUploaderFunc 'apps/transcribr-fileuploader.bicep' = {
     cosmosDbAccountName: cosmos.outputs.accountName
     databaseName: cosmos.outputs.databaseName
     funcAppName: audioUploadFuncAppName
+    audioStorageContainerName: audioStorage.outputs.blobContainerName
   }
 }
 
