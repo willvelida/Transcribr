@@ -45,8 +45,6 @@ param chatModelName string
 @description('The Speech Service that this Function App will use')
 param speechServiceName string
 
-
-
 resource audioStorage 'Microsoft.Storage/storageAccounts@2023-05-01' existing = {
   name: audioStorageAccountName
 }
@@ -173,7 +171,7 @@ resource flexFunctionApp 'Microsoft.Web/sites@2024-04-01' = {
       deployment: {
         storage: {
           type: 'blobContainer'
-          value: storageContainerName
+          value: '${storageAccount.properties.primaryEndpoints.blob}${container.name}'
           authentication: {
             type: 'SystemAssignedIdentity'
           }

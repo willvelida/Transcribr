@@ -1,0 +1,53 @@
+name: Deploy Transcribr.FileUpload Function
+
+on:
+    pull_request:
+        branches:
+            - main
+        paths:
+            - 'src/Transcribr.FileUpload/**'
+    workflow_dispatch:
+
+permissions:
+    contents: read
+    id-token: write
+    pull-requests: write
+
+env:
+    AZURE_FUNCTIONAPP_PACKAGE_PATH: './src/Transcribr.FileUpload/Transcribr.FileUpload'
+    DOTNET_VERSION: 8.0.x
+    OUTPUT_PATH: ${{ github.workspace }}/.output
+    FUNC_APP_NAME: transcribr-upload
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Setup Dotnet
+              uses: actions/setup-dotnet@v3
+              with:
+                dotnet-version: ${{ env.DOTNET_VERSION }}
+
+            - name: 'Resolve Project Dependencies Using Dotnet'
+              shell: pwsh
+              run: |
+                  pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+                  dotnet build --configuration Release --output ./output
+                  popd
+
+            - uses: azure/login@v2
+              name: Azure Login
+              with:
+                client-id: ${{ secrets.AZURE_CLIENT_ID }}
+                tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+                subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          
+            - name: 'Run Azure Functions Action'
+              uses: Azure/functions-action@v1
+              id: fa
+              with:
+                  app-name: ${{ env.FUNC_APP_NAME }}
+                  package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
+  
+    
