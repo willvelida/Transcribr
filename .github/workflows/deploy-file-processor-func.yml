@@ -1,4 +1,4 @@
-name: Deploy Transcribr.FileUpload Function
+name: Deploy Transcribr.FileProcessor Function
 
 on:
     pull_request:
