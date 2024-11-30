@@ -186,6 +186,7 @@ module audioFileProcessorFunc 'apps/transcribr-fileprocessor.bicep' = {
     databaseName: cosmos.outputs.databaseName
     funcAppName: audioProcessorFuncAppName
     speechServiceName: speech.outputs.name
+    audioStorageContainerName: audioStorage.outputs.blobContainerName
   }
 }
 
