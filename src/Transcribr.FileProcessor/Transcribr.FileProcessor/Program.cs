@@ -8,7 +8,7 @@ using Transcribr.FileProcessor.Services;
 using Transcribr.FileProcessor.Services.Interfaces;
 
 var host = new HostBuilder()
-    .ConfigureFunctionsWebApplication()
+    .ConfigureFunctionsWorkerDefaults()
     .ConfigureAppConfiguration(config =>
     {
         config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
